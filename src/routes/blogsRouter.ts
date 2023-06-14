@@ -7,7 +7,7 @@ import {
 
 import { admins } from "../data"
 import basicAuth from "express-basic-auth"
-import { Result, validationResult } from "express-validator";
+import {body, Result, validationResult} from "express-validator";
 import { blogVdChain } from "../inputValidation";
 
 export const blogsRouter = Router({})
@@ -16,7 +16,26 @@ const db: DB = new DB()
 
 
 
-blogsRouter.post('/', basicAuth({users: admins}), blogVdChain, (req: TypeOfRequestBody<BlogInputModel>, res: Response) => {
+blogsRouter.post('/', basicAuth({users: admins}), [
+
+    body('name', 'Incorrect format!')
+        .notEmpty()
+        .bail()
+        .isLength({min: 1, max: 15}).withMessage('Too many characters! (maxLength: 15)'),
+
+    body('description', 'Incorrect format!')
+        .notEmpty()
+        .bail()
+        .isLength({min: 1, max: 500}).withMessage('Too many characters! (maxLength: 500)'),
+
+    body('websiteUrl', 'Incorrect format!')
+        .notEmpty()
+        .bail()
+        .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)')
+    //.bail()
+    //.custom(value => urlRGXValidation(value))
+
+], (req: TypeOfRequestBody<BlogInputModel>, res: Response) => {
 
     const result: Result = validationResult(req)
 
@@ -33,7 +52,7 @@ blogsRouter.post('/', basicAuth({users: admins}), blogVdChain, (req: TypeOfReque
         res.status(201).json(newEntry)
 
     } else {
-    res.status(400).json(result.array().map(({ param, msg }) => ({ message: msg, field: param })))
+    res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
     }
 })
 
@@ -76,7 +95,7 @@ blogsRouter.put('/:id', basicAuth({users: admins}), blogVdChain, (req: TypeOfReq
             res.status(201).json(null)
 
         } else {
-            res.status(400).json(result.array().map(({param, msg}) => ({message: msg, field: param})))
+            res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
         }
     }
 })

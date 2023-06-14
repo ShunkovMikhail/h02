@@ -26,7 +26,7 @@ const blogExists = (id: string) => {
 
 
 
-export const blogVdChain = () => [
+export const blogVdChain = [
 
     body('name', 'Incorrect format!')
         .notEmpty()
@@ -49,7 +49,7 @@ export const blogVdChain = () => [
 
 
 
-export const postVdChain = () => [
+export const postVdChain = [
 
     body('blogId', 'Incorrect id!')
         .notEmpty()

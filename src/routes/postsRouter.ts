@@ -34,7 +34,7 @@ postsRouter.post('/', basicAuth({users: admins}), postVdChain, (req: TypeOfReque
         db.create(TABLE.POSTS, newEntry)
         res.status(201).json(newEntry)
     } else {
-        res.status(400).json(result.array().map(({ param, msg }) => ({ message: msg, field: param })))
+        res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
     }
 })
 
@@ -79,7 +79,7 @@ postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfReq
             res.status(201).json(null)
 
         } else {
-            res.status(400).json(result.array().map(({param, msg}) => ({message: msg, field: param})))
+            res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
         }
     }
 })
