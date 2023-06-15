@@ -11,11 +11,12 @@ export class DB {
 
     create(table: number, input: object) {
         data[table].push(input)
-        while (this.exists(table, increment[table].toString())) {
+        //while (this.exists(table, increment[table].toString())) {
             increment[table]++
-        }
+        //}
     }
 
+    /*
     createAtID(table: number, id: string, input: object) {
         if (this.exists(table, id)) {
             return
@@ -26,6 +27,7 @@ export class DB {
             data[table][index] = input
         }
     }
+    */
 
     get(table: number, id: string): object | null {
         if (this.exists(table, id)) {
