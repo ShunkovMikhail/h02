@@ -71,7 +71,7 @@ export class DB {
         if (!isFinite(index)) {
             return false
         }
-        return !(!data[table][index] || data[table][index] === null)
+        return !(data[table][index] === undefined || data[table][index] === null)
     }
 
 }
