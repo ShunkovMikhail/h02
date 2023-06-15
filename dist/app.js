@@ -6,14 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const data_1 = require("./data");
-const videosRouter_1 = require("./routes/videosRouter");
+const blogsRouter_1 = require("./routes/blogsRouter");
+const postsRouter_1 = require("./routes/postsRouter");
 exports.app = (0, express_1.default)();
 const db = new data_1.DB();
 exports.app.use(express_1.default.json());
+/*
+basicAuth({users: admins})
+ */
 exports.app.get('/', (req, res) => {
     res.sendStatus(204);
 });
 exports.app.delete('/testing/all-data', (req, res) => {
-    res.sendStatus(db.clear(data_1.TABLE.VIDEOS));
+    res.sendStatus(db.clear());
 });
-exports.app.use('/videos', videosRouter_1.videosRouter);
+exports.app.use('/blogs', blogsRouter_1.blogsRouter);
+exports.app.use('/posts', postsRouter_1.postsRouter);

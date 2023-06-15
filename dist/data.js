@@ -1,24 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB = exports.TABLE = exports.RESOLUTIONS = void 0;
-var RESOLUTIONS;
-(function (RESOLUTIONS) {
-    RESOLUTIONS[RESOLUTIONS["P144"] = 0] = "P144";
-    RESOLUTIONS[RESOLUTIONS["P240"] = 1] = "P240";
-    RESOLUTIONS[RESOLUTIONS["P360"] = 2] = "P360";
-    RESOLUTIONS[RESOLUTIONS["P480"] = 3] = "P480";
-    RESOLUTIONS[RESOLUTIONS["P720"] = 4] = "P720";
-    RESOLUTIONS[RESOLUTIONS["P1080"] = 5] = "P1080";
-    RESOLUTIONS[RESOLUTIONS["P1440"] = 6] = "P1440";
-    RESOLUTIONS[RESOLUTIONS["P2160"] = 7] = "P2160";
-})(RESOLUTIONS = exports.RESOLUTIONS || (exports.RESOLUTIONS = {}));
+exports.DB = exports.TABLE = exports.admins = void 0;
+exports.admins = { 'admin': 'qwerty' };
 //-------------------DB------------------------+
 var TABLE;
 (function (TABLE) {
-    TABLE[TABLE["VIDEOS"] = 0] = "VIDEOS";
+    TABLE[TABLE["BLOGS"] = 0] = "BLOGS";
+    TABLE[TABLE["POSTS"] = 1] = "POSTS";
 })(TABLE = exports.TABLE || (exports.TABLE = {}));
 let data = [[]];
-let increment = [0];
+let increment = [0, 0];
 //-------------------DB------------------------+
 class DB {
     create(table, input) {
@@ -47,8 +38,12 @@ class DB {
         data[table][id] = null;
         return 204;
     }
-    clear(table) {
+    clearTable(table) {
         data[table] = [];
+        return 204;
+    }
+    clear() {
+        data = [[]];
         return 204;
     }
     nextID(table) {

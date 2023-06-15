@@ -75,7 +75,7 @@ blogsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object
 
 
 
-blogsRouter.put('/:id', basicAuth({users: admins}), blogVdChain, (req: TypeOfRequestP_Body<{id: string},
+blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
     BlogInputModel>, res: Response) => {
     if (!db.exists(TABLE.BLOGS, +req.params.id)) {
         res.sendStatus(404)
