@@ -16,33 +16,14 @@ const db: DB = new DB()
 
 
 
-blogsRouter.post('/', basicAuth({users: admins}), [
-
-    body('name', 'Incorrect format!')
-        .notEmpty()
-        .bail()
-        .isLength({min: 1, max: 15}).withMessage('Too many characters! (maxLength: 15)'),
-
-    body('description', 'Incorrect format!')
-        .notEmpty()
-        .bail()
-        .isLength({min: 1, max: 500}).withMessage('Too many characters! (maxLength: 500)'),
-
-    body('websiteUrl', 'Incorrect format!')
-        .notEmpty()
-        .bail()
-        .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)')
-    //.bail()
-    //.custom(value => urlRGXValidation(value))
-
-], (req: TypeOfRequestBody<BlogInputModel>, res: Response) => {
+blogsRouter.post('/', basicAuth({users: admins}), blogVdChain, (req: TypeOfRequestBody<BlogInputModel>, res: Response) => {
 
     const result: Result = validationResult(req)
 
     if (result.isEmpty()) {
 
         const newEntry: BlogViewModel = {
-            id: db.nextID(TABLE.BLOGS).toString(),
+            id: db.nextID(TABLE.BLOGS),
             name: req.body.name,
             description: req.body.description,
             websiteUrl: req.body.websiteUrl
@@ -66,10 +47,10 @@ blogsRouter.get('/', (req: Request, res: Response<Array<object | null>>) => {
 
 blogsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object | null>) => {
 
-    if (!db.exists(TABLE.BLOGS, +req.params.id)) {
+    if (!db.exists(TABLE.BLOGS, req.params.id)) {
         res.sendStatus(404)
     } else {
-        res.status(200).json(db.get(TABLE.BLOGS, +req.params.id))
+        res.status(200).json(db.get(TABLE.BLOGS, req.params.id))
     }
 })
 
@@ -77,7 +58,7 @@ blogsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object
 
 blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
     BlogInputModel>, res: Response) => {
-    if (!db.exists(TABLE.BLOGS, +req.params.id)) {
+    if (!db.exists(TABLE.BLOGS, req.params.id)) {
         res.sendStatus(404)
     } else {
 
@@ -91,7 +72,7 @@ blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
                 websiteUrl: req.body.websiteUrl
             }
 
-            db.update(TABLE.BLOGS, +req.params.id, updateEntry)
+            db.update(TABLE.BLOGS, req.params.id, updateEntry)
             res.status(201).json(null)
 
         } else {
@@ -103,7 +84,7 @@ blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
 
 
 blogsRouter.delete('/:id', basicAuth({users: admins}), (req: TypeOfRequestP<{id: string}>, res: Response) => {
-    res.sendStatus(db.delete(TABLE.BLOGS, +req.params.id))
+    res.sendStatus(db.delete(TABLE.BLOGS, req.params.id))
 })
 
 

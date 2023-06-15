@@ -19,7 +19,7 @@ const urlRGXValidation = (value: string) => {
 
 
 const blogExists = (id: string) => {
-    if (!db.exists(TABLE.BLOGS, +id)) {
+    if (!db.exists(TABLE.BLOGS, id)) {
         throw new Error('blogId does not exist!')
     }
 }
@@ -239,4 +239,4 @@ const arrayStrictMatch = (first: string[], second: string[] | null): boolean => 
 
 
 
-const equalType = (a: unknown, b: unknown) => typeof(a) === typeof(b)
+export const equalType = (a: unknown, b: unknown) => typeof(a) === typeof(b)

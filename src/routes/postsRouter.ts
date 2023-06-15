@@ -23,7 +23,7 @@ postsRouter.post('/', basicAuth({users: admins}), postVdChain, (req: TypeOfReque
     if (result.isEmpty()) {
 
         const newEntry: PostViewModel = {
-            id: db.nextID(TABLE.POSTS).toString(),
+            id: db.nextID(TABLE.POSTS),
             blogId: req.body.title,
             blogName: req.body.blogName,
             title: req.body.title,
@@ -48,10 +48,10 @@ postsRouter.get('/', (req: Request, res: Response<Array<object | null>>) => {
 
 postsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object | null>) => {
 
-    if (!db.exists(TABLE.POSTS, +req.params.id)) {
+    if (!db.exists(TABLE.POSTS, req.params.id)) {
         res.sendStatus(404)
     } else {
-        res.status(200).json(db.get(TABLE.POSTS, +req.params.id))
+        res.status(200).json(db.get(TABLE.POSTS, req.params.id))
     }
 })
 
@@ -59,7 +59,7 @@ postsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object
 
 postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfRequestP_Body<{id: string},
     PostInputModel>, res: Response) => {
-    if (!db.exists(TABLE.POSTS, +req.params.id)) {
+    if (!db.exists(TABLE.POSTS, req.params.id)) {
         res.sendStatus(404)
     } else {
 
@@ -75,7 +75,7 @@ postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfReq
                 content: req.body.content
             }
 
-            db.update(TABLE.POSTS, +req.params.id, updateEntry)
+            db.update(TABLE.POSTS, req.params.id, updateEntry)
             res.status(201).json(null)
 
         } else {
@@ -87,7 +87,7 @@ postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfReq
 
 
 postsRouter.delete('/:id', basicAuth({users: admins}), (req: TypeOfRequestP<{id: string}>, res: Response) => {
-    res.sendStatus(db.delete(TABLE.POSTS, +req.params.id))
+    res.sendStatus(db.delete(TABLE.POSTS, req.params.id))
 })
 
 

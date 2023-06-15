@@ -16,28 +16,39 @@ export class DB {
         }
     }
 
-    createAtID(table: number, id: number, input: object) {
-        data[table][id] = input
+    createAtID(table: number, id: string, input: object) {
+        if (this.exists(table, id)) {
+            return
+        }
+        const index: number = parseInt(id, 10)
+
+        if (isFinite(index)) {
+            data[table][index] = input
+        }
     }
 
-    get(table: number, id: number): object | null {
-        return data[table][id]
+    get(table: number, id: string): object | null {
+        if (this.exists(table, id)) {
+            return data[table][+id]
+        }
+            return null
     }
 
     getAll(table: number): Array<object | null> {
         return data[table].filter(o => o !== null)
     }
 
-    update(table: number, id: number, input: object) {
-        console.log(data[table] , 'data')
-        data[table][id] = Object.assign({}, data[table][id], input)
+    update(table: number, id: string, input: object) {
+        if (this.exists(table, id)) {
+            data[table][+id] = Object.assign({}, data[table][+id], input)
+        }
     }
 
-    delete(table: number, id: number): number {
-        if (!data[table][id] || data[table][id] === null) {
+    delete(table: number, id: string): number {
+        if (!this.exists(table, id)) {
             return 404
         }
-        data[table][id] = null
+        data[table][+id] = null
         return 204
     }
 
@@ -51,12 +62,16 @@ export class DB {
         return 204
     }
 
-    nextID(table: number): number {
-        return increment[table]
+    nextID(table: number): string {
+        return increment[table].toString()
     }
 
-    exists(table: number, id: number): boolean {
-        return !(!data[table][id] || data[table][id] === null)
+    exists(table: number, id: string): boolean {
+        const index: number = parseInt(id, 10)
+        if (!isFinite(index)) {
+            return false
+        }
+        return !(!data[table][index] || data[table][index] === null)
     }
 
 }

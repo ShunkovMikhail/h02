@@ -11,9 +11,7 @@ const db: DB = new DB()
 
 app.use(express.json())
 
-/*
-basicAuth({users: admins})
- */
+
 
 app.get('/', (req: Request, res: Response) => {
     res.sendStatus(204)
