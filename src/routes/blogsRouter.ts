@@ -52,7 +52,7 @@ blogsRouter.post('/', basicAuth({users: admins}), [
         res.status(201).json(newEntry)
 
     } else {
-    res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
+    res.status(400).json({ errorsMessages: result.array().map(({ path, msg }) => ({ message: msg, field: path })) })
     }
 })
 
@@ -95,7 +95,7 @@ blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
             res.status(201).json(null)
 
         } else {
-            res.status(400).json(result.array().map(({ path, msg }) => ({ message: msg, field: path })))
+            res.status(400).json({ errorsMessages: result.array().map(({ path, msg }) => ({ message: msg, field: path })) })
         }
     }
 })
