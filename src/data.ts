@@ -11,7 +11,7 @@ export class DB {
 
     create(table: number, input: object) {
         data[table].push(input)
-        while (!(!data[table][increment[table]] || data[table][increment[table]] === null)) {
+        while (this.exists(table, increment[table].toString())) {
             increment[table]++
         }
     }
