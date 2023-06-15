@@ -11,9 +11,10 @@ const db: DB = new DB()
 
 
 const urlRGXValidation = (value: string) => {
-    if (urlRGX.test(value)) {
+    if (!urlRGX.test(value)) {
         throw new Error('Incorrect regex!')
     }
+    return true
 }
 
 
@@ -22,6 +23,7 @@ const blogExists = (id: string) => {
     if (!db.exists(TABLE.BLOGS, id)) {
         throw new Error('blogId does not exist!')
     }
+    return true
 }
 
 
