@@ -11,7 +11,7 @@ const db: DB = new DB()
 
 
 const urlRGXValidation = (value: string) => {
-    if (!urlRGX.test(value)) {
+    if (urlRGX.test(value)) {
         throw new Error('Incorrect regex!')
     }
 }
