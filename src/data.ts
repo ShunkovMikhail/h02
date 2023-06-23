@@ -40,6 +40,15 @@ export class DB {
         return data[table].filter(o => o !== null)
     }
 
+    getProperty(table: number, id: string, property: string) {
+        if (this.exists(table, id)) {
+            const entry = data[table][+id]
+            // @ts-ignore
+            return entry[property]
+        }
+        return null
+    }
+
     update(table: number, id: string, input: object) {
         if (this.exists(table, id)) {
             data[table][+id] = Object.assign({}, data[table][+id], input)
