@@ -8,49 +8,68 @@ var TABLE;
     TABLE[TABLE["BLOGS"] = 0] = "BLOGS";
     TABLE[TABLE["POSTS"] = 1] = "POSTS";
 })(TABLE = exports.TABLE || (exports.TABLE = {}));
-let data = [[]];
+let data = [[], []];
 let increment = [0, 0];
 //-------------------DB------------------------+
 class DB {
     create(table, input) {
         data[table].push(input);
-        while (!(!data[table][increment[table]] || data[table][increment[table]] === null)) {
-            increment[table]++;
+        //while (this.exists(table, increment[table].toString())) {
+        increment[table]++;
+        //}
+    }
+    /*
+    createAtID(table: number, id: string, input: object) {
+        if (this.exists(table, id)) {
+            return
+        }
+        const index: number = parseInt(id, 10)
+
+        if (isFinite(index)) {
+            data[table][index] = input
         }
     }
-    createAtID(table, id, input) {
-        data[table][id] = input;
-    }
+    */
     get(table, id) {
-        return data[table][id];
+        if (this.exists(table, id)) {
+            return data[table][+id];
+        }
+        return null;
     }
     getAll(table) {
         return data[table].filter(o => o !== null);
     }
     update(table, id, input) {
-        console.log(data[table], 'data');
-        data[table][id] = Object.assign({}, data[table][id], input);
+        if (this.exists(table, id)) {
+            data[table][+id] = Object.assign({}, data[table][+id], input);
+        }
     }
     delete(table, id) {
-        if (!data[table][id] || data[table][id] === null) {
+        if (!this.exists(table, id)) {
             return 404;
         }
-        data[table][id] = null;
+        data[table][+id] = null;
         return 204;
     }
     clearTable(table) {
         data[table] = [];
+        increment[table] = 0;
         return 204;
     }
     clear() {
-        data = [[]];
+        data = [[], []];
+        increment = [0, 0];
         return 204;
     }
     nextID(table) {
-        return increment[table];
+        return increment[table].toString();
     }
     exists(table, id) {
-        return !(!data[table][id] || data[table][id] === null);
+        const index = parseInt(id, 10);
+        if (!isFinite(index)) {
+            return false;
+        }
+        return !(data[table][index] === undefined || data[table][index] === null);
     }
 }
 exports.DB = DB;

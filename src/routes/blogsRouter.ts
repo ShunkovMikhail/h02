@@ -56,7 +56,7 @@ blogsRouter.get('/:id', (req: TypeOfRequestP<{id: string}>, res: Response<object
 
 
 
-blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
+blogsRouter.put('/:id', basicAuth({users: admins}), blogVdChain, (req: TypeOfRequestP_Body<{id: string},
     BlogInputModel>, res: Response) => {
     if (!db.exists(TABLE.BLOGS, req.params.id)) {
         res.sendStatus(404)
@@ -73,7 +73,7 @@ blogsRouter.put('/:id', blogVdChain, (req: TypeOfRequestP_Body<{id: string},
             }
 
             db.update(TABLE.BLOGS, req.params.id, updateEntry)
-            res.status(201).json(null)
+            res.sendStatus(204)
 
         } else {
             res.status(400).json({ errorsMessages: result.array().map(({ path, msg }) => ({ message: msg, field: path })) })

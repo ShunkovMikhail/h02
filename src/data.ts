@@ -3,8 +3,8 @@ export const admins = { 'admin': 'qwerty' }
 
 //-------------------DB------------------------+
 export enum TABLE { BLOGS = 0, POSTS = 1 }
-let data: Array<Array<object | null>> = [[]]
-let increment: number[] = [0, 0];
+let data: Array<Array<object | null>> = [[], []]
+let increment: number[] = [0, 0]
 //-------------------DB------------------------+
 
 export class DB {
@@ -56,11 +56,13 @@ export class DB {
 
     clearTable(table: number): number {
         data[table] = []
+        increment[table] = 0
         return 204
     }
 
     clear(): number {
-        data = [[]]
+        data = [[], []]
+        increment = [0, 0]
         return 204
     }
 

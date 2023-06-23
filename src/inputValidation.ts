@@ -31,16 +31,19 @@ const blogExists = (id: string) => {
 export const blogVdChain = [
 
     body('name', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 15}).withMessage('Too many characters! (maxLength: 15)'),
 
     body('description', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 500}).withMessage('Too many characters! (maxLength: 500)'),
 
     body('websiteUrl', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)')
@@ -54,6 +57,7 @@ export const blogVdChain = [
 export const postVdChain = [
 
     body('blogId', 'Incorrect id!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 64})
@@ -61,16 +65,19 @@ export const postVdChain = [
         .custom(id => blogExists(id)),
 
     body('title', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 30}).withMessage('Too many characters! (maxLength: 30)'),
 
     body('shortDescription', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)'),
 
     body('content', 'Incorrect format!')
+        .trim()
         .notEmpty()
         .bail()
         .isLength({min: 1, max: 1000}).withMessage('Too many characters! (maxLength: 1000)')

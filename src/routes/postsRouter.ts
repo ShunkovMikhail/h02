@@ -24,7 +24,7 @@ postsRouter.post('/', basicAuth({users: admins}), postVdChain, (req: TypeOfReque
 
         const newEntry: PostViewModel = {
             id: db.nextID(TABLE.POSTS),
-            blogId: req.body.title,
+            blogId: req.body.blogId,
             blogName: req.body.blogName,
             title: req.body.title,
             shortDescription: req.body.shortDescription,
@@ -41,7 +41,7 @@ postsRouter.post('/', basicAuth({users: admins}), postVdChain, (req: TypeOfReque
 
 
 postsRouter.get('/', (req: Request, res: Response<Array<object | null>>) => {
-    res.status(200).json(db.getAll(TABLE.BLOGS))
+    res.status(200).json(db.getAll(TABLE.POSTS))
 })
 
 
@@ -68,7 +68,7 @@ postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfReq
         if (result.isEmpty()) {
 
             const updateEntry: PostInputModel = {
-                blogId: req.body.title,
+                blogId: req.body.blogId,
                 blogName: req.body.blogName,
                 title: req.body.title,
                 shortDescription: req.body.shortDescription,
@@ -76,7 +76,7 @@ postsRouter.put('/:id', basicAuth({users: admins}), postVdChain, (req: TypeOfReq
             }
 
             db.update(TABLE.POSTS, req.params.id, updateEntry)
-            res.status(201).json(null)
+            res.sendStatus(204)
 
         } else {
             res.status(400).json({ errorsMessages: result.array().map(({ path, msg }) => ({ message: msg, field: path })) })
