@@ -17,7 +17,7 @@ app.get('/', (req: Request, res: Response) => {
     res.sendStatus(204)
 })
 
-app.delete('/testing/all-data', basicAuth({users: admins}), (req: Request, res: Response) => {
+app.delete('/testing/all-data', (req: Request, res: Response) => {
     res.sendStatus(db.clear())
 })
 
